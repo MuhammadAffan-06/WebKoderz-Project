@@ -56,8 +56,10 @@ const login = async (req, res) => {
         if (results.length === 0) {
             return res.status(401).json("Invalid CNIC or password");
         }
-
         const user = results[0];
+        if (user.approved == false) {
+            return res.status(403).json("User not appproved yet! Contact admin");
+        }
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if (err) {
                 console.error("Error comparing passwords:", err);

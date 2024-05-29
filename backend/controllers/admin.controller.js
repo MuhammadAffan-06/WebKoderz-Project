@@ -97,8 +97,48 @@ const fetchRecords = (req, res) => {
     }
 
 }
+const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json("Please provide both email and password");
+    }
+
+    // Fetch admin by CNIC
+    connection.query("SELECT * FROM admins WHERE email = ?", [email], (error, results) => {
+        if (error) {
+            console.error("Error fetching the user:", error);
+            return res.status(500).json("Error fetching the user");
+        }
+
+        if (results.length === 0) {
+            return res.status(401).json("Invalid email or password");
+        }
+        const user = results[0];
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) {
+                console.error("Error comparing passwords:", err);
+                return res.status(500).json("Error during authentication");
+            }
+
+            if (!isMatch) {
+                return res.status(401).json("Invalid email or password");
+            }
+
+            // Generate JWT token
+            const token = jwt.sign({ userID: user.userID }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+            return res.status(200).json({
+                message: "Login successful",
+                token: token
+            });
+        });
+    });
+};
+
 
 module.exports = {
+    login,
     approval,
     fetchRecords,
     registration
