@@ -24,7 +24,7 @@ const UserLogin = () => {
         sessionStorage.setItem('token', data.token);
         console.log(sessionStorage);
         console.log('Login successful');
-        navigate('/'); // Replace with the actual route you want to navigate to after login
+        navigate('/home'); // Replace with the actual route you want to navigate to after login
       } else {
         console.error(data);
         alert(data); // You can replace this with a more user-friendly error display
@@ -50,14 +50,22 @@ const UserLogin = () => {
     navigate('/register');
   };
 
+  const outerContainerStyle = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: "100vh",
+    background: "linear-gradient(135deg, #00401A 0%, #007F0E 100%)",
+    fontFamily: "Arial, sans-serif",
+    boxSizing: "border-box",
+  };
+
   const containerStyle = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    height: "100vh",
-    background: "linear-gradient(135deg, #00401A 0%, #007F0E 100%)",
-    fontFamily: "Arial, sans-serif",
   };
 
   const headerStyle = {
@@ -83,6 +91,7 @@ const UserLogin = () => {
     borderRadius: "8px",
     boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
     width: "300px",
+    boxSizing: "border-box",
   };
 
   const inputStyle = {
@@ -92,6 +101,7 @@ const UserLogin = () => {
     border: "1px solid #ccc",
     fontSize: "16px",
     width: "100%",
+    boxSizing: "border-box",
   };
 
   const buttonStyle = {
@@ -105,6 +115,7 @@ const UserLogin = () => {
     cursor: "pointer",
     fontWeight: "bold",
     width: "100%",
+    boxSizing: "border-box",
   };
 
   const registerButtonStyle = {
@@ -119,6 +130,7 @@ const UserLogin = () => {
     fontWeight: "bold",
     width: "100px",
     textAlign: "center",
+    boxSizing: "border-box",
   };
 
   const registerTextStyle = {
@@ -129,43 +141,45 @@ const UserLogin = () => {
   };
 
   return (
-    <div style={containerStyle}>
-      <img
-        src={logo}
-        alt="Logo"
-        style={{ marginBottom: "20px", width: "150px", marginTop: "60px" }}
-      />
-      <h1 style={headerStyle}>Welcome to Election Commission of Pakistan</h1>
-      <h3 style={subHeaderStyle}>Login into your account</h3>
-      <form style={formStyle} onSubmit={handleLogin}>
-        <h2>Login</h2>
-        <input
-          type="text"
-          placeholder="CNIC"
-          value={cnic}
-          onChange={handleCnicChange}
-          style={inputStyle}
-          required
+    <div style={outerContainerStyle}>
+      <div style={containerStyle}>
+        <img
+          src={logo}
+          alt="Logo"
+          style={{ marginBottom: "20px", width: "150px", marginTop: "60px" }}
         />
-        {cnicError && (
-          <span style={{ color: "red", marginBottom: "10px" }}>
-            {cnicError}
-          </span>
-        )}
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={inputStyle}
-          required
-        />
-        <button type="submit" style={buttonStyle}>
-          Login
-        </button>
-      </form>
-      <p style={registerTextStyle}>Don't have an account? Create one</p>
-      <button onClick={handleClick} style={registerButtonStyle}>Register</button>
+        <h1 style={headerStyle}>Welcome to Election Commission of Pakistan</h1>
+        <h3 style={subHeaderStyle}>Login into your account</h3>
+        <form style={formStyle} onSubmit={handleLogin}>
+          <h2>Login</h2>
+          <input
+            type="text"
+            placeholder="CNIC"
+            value={cnic}
+            onChange={handleCnicChange}
+            style={inputStyle}
+            required
+          />
+          {cnicError && (
+            <span style={{ color: "red", marginBottom: "10px" }}>
+              {cnicError}
+            </span>
+          )}
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={inputStyle}
+            required
+          />
+          <button type="submit" style={buttonStyle}>
+            Login
+          </button>
+        </form>
+        <p style={registerTextStyle}>Don't have an account? Create one</p>
+        <button onClick={handleClick} style={registerButtonStyle}>Register</button>
+      </div>
     </div>
   );
 };

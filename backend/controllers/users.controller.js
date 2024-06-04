@@ -21,7 +21,6 @@ const registration = async (req, res) => {
 
             try {
                 const hashedPassword = await bcrypt.hash(password, 10);
-
                 connection.query("INSERT INTO users (name, cnic, password) VALUES (?, ?, ?)", [name, cnic, hashedPassword], (error, results) => {
                     if (error) {
                         console.error("Error registering the user:", error);

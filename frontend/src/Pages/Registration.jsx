@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import logo from "./logo.png";
 import { useNavigate } from "react-router-dom";
-
 const UserRegistration = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [cnic, setCnic] = useState("");
   const [password, setPassword] = useState("");
+  const [nameError, setNameError] = useState("");
   const [cnicError, setCnicError] = useState("");
 
   const handleRegister = async (e) => {
@@ -20,10 +20,9 @@ const UserRegistration = () => {
         body: JSON.stringify({ name, cnic, password })
       });
       const data = await response.json();
-
       if (response.ok) {
         console.log('Registration successful');
-        navigate('/login');
+        navigate('/');
       } else {
         console.error(data);
         alert(data);
@@ -35,7 +34,7 @@ const UserRegistration = () => {
   };
 
   const handleClick = () => {
-    navigate('/login');
+    navigate('/');
   };
 
   const handleCnicChange = (e) => {
@@ -49,14 +48,33 @@ const UserRegistration = () => {
     }
   };
 
+  const handleNameChange = (e) => {
+    const inputName = e.target.value;
+    // Check if inputName contains any numbers
+    if (/^[A-Za-z\s]*$/.test(inputName) || inputName === "") {
+      setName(inputName);
+      setNameError("");
+    } else {
+      setNameError("Name should not contain numbers");
+    }
+  };
+
+  const outerContainerStyle = {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: "100vh",
+    background: "linear-gradient(135deg, #00401A 0%, #007F0E 100%)",
+    fontFamily: "Arial, sans-serif",
+    boxSizing: "border-box",
+  };
+
   const containerStyle = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    height: "100vh",
-    background: "linear-gradient(135deg, #00401A 0%, #007F0E 100%)",
-    fontFamily: "Arial, sans-serif",
   };
 
   const headerStyle = {
@@ -82,6 +100,7 @@ const UserRegistration = () => {
     borderRadius: "8px",
     boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
     width: "300px",
+    boxSizing: "border-box",
   };
 
   const inputStyle = {
@@ -91,6 +110,7 @@ const UserRegistration = () => {
     border: "1px solid #ccc",
     fontSize: "16px",
     width: "100%",
+    boxSizing: "border-box",
   };
 
   const buttonStyle = {
@@ -104,6 +124,7 @@ const UserRegistration = () => {
     cursor: "pointer",
     fontWeight: "bold",
     width: "100%",
+    boxSizing: "border-box",
   };
 
   const loginTextStyle = {
@@ -125,54 +146,63 @@ const UserRegistration = () => {
     fontWeight: "bold",
     width: "100px",
     textAlign: "center",
+    boxSizing: "border-box",
   };
 
   return (
-    <div style={containerStyle}>
-      <img
-        src={logo}
-        alt="Logo"
-        style={{ marginBottom: "20px", width: "150px", marginTop: "100px" }}
-      />
-      <h1 style={headerStyle}>Register with Election Commission of Pakistan</h1>
-      <h3 style={subHeaderStyle}>Create your account</h3>
-      <form style={formStyle} onSubmit={handleRegister}>
-        <h2>Registration</h2>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          style={inputStyle}
-          required
+    <div style={outerContainerStyle}>
+      <div style={containerStyle}>
+        <img
+          src={logo}
+          alt="Logo"
+          style={{ marginBottom: "20px", width: "150px", marginTop: "100px" }}
         />
-        <input
-          type="text"
-          placeholder="CNIC"
-          value={cnic}
-          onChange={handleCnicChange}
-          style={inputStyle}
-          required
-        />
-        {cnicError && (
-          <span style={{ color: "red", marginBottom: "10px" }}>
-            {cnicError}
-          </span>
-        )}
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={inputStyle}
-          required
-        />
-        <button type="submit" style={buttonStyle}>
-          Register
-        </button>
-      </form>
-      <p style={loginTextStyle}>Already have an account?</p>
-      <button onClick={handleClick} style={loginButtonStyle}>Login</button>
+        <h1 style={headerStyle}>Register with Election Commission of Pakistan</h1>
+        <h3 style={subHeaderStyle}>Create your account</h3>
+        <form style={formStyle} onSubmit={handleRegister}>
+          <h2>Registration</h2>
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={handleNameChange}
+            style={inputStyle}
+            required
+          />
+          {nameError && (
+            <span style={{ color: "red", marginBottom: "10px" }}>
+              {nameError}
+            </span>
+          )}
+          <input
+            type="text"
+            placeholder="CNIC"
+            value={cnic}
+            onChange={handleCnicChange}
+            style={inputStyle}
+            required
+          />
+          {cnicError && (
+            <span style={{ color: "red", marginBottom: "10px" }}>
+              {cnicError}
+            </span>
+          )}
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={inputStyle}
+            required
+          />
+          <button type="submit" style={buttonStyle}>
+            Register
+          </button>
+        </form>
+        <p style={loginTextStyle}>Already have an account?</p>
+        <button onClick={handleClick} style={loginButtonStyle}>Login</button>
+
+      </div>
     </div>
   );
 };

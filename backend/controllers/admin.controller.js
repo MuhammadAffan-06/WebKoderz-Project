@@ -97,6 +97,23 @@ const fetchRecords = (req, res) => {
     }
 
 }
+const fetchAllRecords = (req, res) => {
+    try {
+        connection.query("SELECT * FROM users", (error, results) => {
+            if (error) {
+                console.error(error);
+                return res.status(403);
+            }
+            else {
+                console.table(results);
+                return res.status(200).json(results);
+            }
+        })
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json("Internal Server Error");
+    }
+}
 const login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -141,5 +158,6 @@ module.exports = {
     login,
     approval,
     fetchRecords,
-    registration
+    registration,
+    fetchAllRecords
 };
